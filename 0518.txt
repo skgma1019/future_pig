@@ -1,0 +1,84 @@
+
+✅ 오늘 진행한 작업 요약 (2025.05.18)
+🔧 1. Spring Boot 프로젝트 생성
+사용한 빌드 도구: Maven
+
+Spring Boot 버전: 3.4.5
+
+Java 버전: 21
+
+주요 의존성:
+
+spring-boot-starter-web
+
+spring-boot-starter-thymeleaf
+
+spring-boot-starter-data-jpa
+
+spring-boot-devtools
+
+spring-boot-starter-test
+
+mysql-connector-j (8.0.32) ← 직접 명시함
+
+⚙️ 2. Maven 오류 해결
+.tmp, .lastUpdated 등 Maven 캐시 충돌 파일 삭제
+
+spring-boot-starter-parent 및 mysql-connector-j 의존성 문제 해결
+
+pom.xml 수동 수정 및 mvn clean install -U로 강제 재시도 완료
+
+🐬 3. MySQL 설치
+공식 사이트에서 MySQL Server 9.3 설치
+
+Visual C++ Redistributable 2019 설치 (사전 요구사항)
+
+설치 시 “Typical” 모드 선택
+
+MySQL Root 계정 생성 및 비밀번호 설정 완료
+
+🔧 4. MySQL 설정
+root 계정 비밀번호 설정 (Spring Boot 연동용)
+
+포트: 기본값 3306
+
+Windows 서비스로 등록 (자동 실행)
+
+설치 후 MySQL 서버 자동 실행 확인
+
+🖥️ 5. MySQL Workbench 설치
+공식 웹사이트에서 다운로드
+
+Oracle 로그인 없이 설치 (No thanks, just start my download)
+
+설치 후 실행 → root 계정으로 로그인 성공
+
+🗃️ 6. 데이터베이스 생성
+sql
+복사
+편집
+CREATE DATABASE community CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+DB 이름: community
+
+Spring Boot 프로젝트에서 이 DB와 연결 예정
+
+⚙️ 7. Spring Boot DB 연동 설정 (application.properties)
+properties
+복사
+편집
+spring.datasource.url=jdbc:mysql://localhost:3306/community?serverTimezone=Asia/Seoul
+spring.datasource.username=root
+spring.datasource.password=너가_설정한_비밀번호
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+🧠 다음 작업 후보 (내일 할 수 있는 것)
+ JPA Entity 생성 (User, Post 등)
+
+ 게시판 CRUD 구현
+
+ Thymeleaf로 게시판 화면 구성
+
+ 로그인/회원가입 기능 추가
