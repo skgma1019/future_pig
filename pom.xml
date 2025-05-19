@@ -9,10 +9,10 @@
 		<version>3.2.5</version>
 	</parent>
 
-	<groupId>com.example</groupId>
-	<artifactId>demo</artifactId>
+	<groupId>com.project</groupId>
+	<artifactId>community</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>demo</name>
+	<name>community</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -60,6 +60,14 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- 기타 의존성 ... -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.30</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -79,4 +87,11 @@
 			</plugin>
 		</plugins>
 	</build>
+	<repositories>
+		<repository>
+			<id>aliyunmaven</id>
+			<url>https://maven.aliyun.com/repository/public</url>
+		</repository>
+	</repositories>
 </project>
+
