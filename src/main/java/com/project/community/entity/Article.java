@@ -2,8 +2,10 @@ package com.project.community.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "articles")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,4 +22,13 @@ public class Article {
     private String content;
 
     private String author;
+
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+
+    }
 }

@@ -1,5 +1,6 @@
 package com.project.community.controller;
 
+import com.project.community.dto.ArticleDto;
 import com.project.community.entity.Article;
 import com.project.community.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,17 +27,39 @@ public class ArticleController {
     }
 
     @PostMapping
-    public Article createArticle(@RequestBody Article article) {
+    public Article createArticle(@RequestBody ArticleDto dto) {
+        Article article = new Article();
+        article.setTitle(dto.getTitle());
+        article.setContent(dto.getContent());
+        article.setAuthor(dto.getAuthor());
+
         return articleService.create(article);
     }
 
+    // 게시글 수정
     @PutMapping("/{id}")
-    public Article updateArticle(@PathVariable Long id, @RequestBody Article article) {
+    public Article updateArticle(@PathVariable Long id, @RequestBody ArticleDto dto) {
+        Article article = new Article();
+        article.setTitle(dto.getTitle());
+        article.setContent(dto.getContent());
+        article.setAuthor(dto.getAuthor());
+
         return articleService.update(id, article);
     }
 
+    // 게시글 삭제
     @DeleteMapping("/{id}")
     public void deleteArticle(@PathVariable Long id) {
         articleService.delete(id);
     }
+
+    // 🔍 확인용 테스트 API (선택)
+    @PostMapping("/test")
+    public String testJson(@RequestBody ArticleDto dto) {
+        System.out.println("📥 title: " + dto.getTitle());
+        System.out.println("📥 content: " + dto.getContent());
+        System.out.println("📥 author: " + dto.getAuthor());
+        return "OK";
+    }
 }
+

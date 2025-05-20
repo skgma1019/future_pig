@@ -1,4 +1,4 @@
 package com.project.community.config;
 
-public class AppCongif {
+public class AppConfig {
 }
