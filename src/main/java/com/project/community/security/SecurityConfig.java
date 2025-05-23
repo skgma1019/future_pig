@@ -25,6 +25,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // ✅ 이 줄 추가
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/timetable/**").permitAll()
+                .requestMatchers("/api/meal/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
