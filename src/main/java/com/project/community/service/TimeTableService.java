@@ -1,10 +1,16 @@
 // TimeTableService.java
 package com.project.community.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.community.dto.TimeTableDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +23,7 @@ public class TimeTableService {
 
     private final String BASE_URL = "https://open.neis.go.kr/hub/hisTimetable";
 
-    public String getTimetable(String officeCode, String schoolCode, String grade, String classNM, String date) {
+    public List<TimeTableDto> getTimetable(String officeCode, String schoolCode, String grade, String classNM, String date) {
         String url = BASE_URL +
                 "?KEY=" + apitimetableKey +
                 "&Type=json" +
@@ -27,15 +33,22 @@ public class TimeTableService {
                 "&CLASS_NM=" + classNM +
                 "&TI_FROM_YMD=" + date +
                 "&TI_TO_YMD=" + date;
+
+        List<TimeTableDto> result = new ArrayList<>();
         try {
-            System.out.println("등교요청: grade=" + grade + ", classNM=" + classNM + ", date=" + date);
+            String json = restTemplate.getForObject(url, String.class);
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(json);
 
-            return restTemplate.getForObject(url, String.class);
+            JsonNode rowNode = root.path("hisTimetable").get(1).path("row");
+            for (JsonNode node : rowNode) {
+                String period = node.get("PERIO").asText();
+                String subject = node.get("ITRT_CNTNT").asText();
+                result.add(new TimeTableDto(period, subject));
+            }
         } catch (Exception e) {
-            System.out.println("❌ 오류 발생: " + e.getMessage());
-            return "오류 발생: " + e.getMessage();
+            System.out.println("시간표 파싱 오류: " + e.getMessage());
         }
-
-//        return restTemplate.getForObject(url, String.class);
+        return result;
     }
 }

@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.project.community.dto.MealDto;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,7 +17,7 @@ public class MealController {
     private final MealService mealService;
 
     @GetMapping
-    public String getMeal(
+    public List<MealDto> getMeal(
             @RequestParam String date
     ) {
         String officeCode = "B10";

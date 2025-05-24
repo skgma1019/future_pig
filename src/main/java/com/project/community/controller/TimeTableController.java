@@ -1,9 +1,12 @@
 // TimeTableController.java
 package com.project.community.controller;
 
+import com.project.community.dto.TimeTableDto;
 import com.project.community.service.TimeTableService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -13,7 +16,7 @@ public class TimeTableController {
     private final TimeTableService timeTableService;
 
     @GetMapping
-    public String getTimetable(
+    public List<TimeTableDto> getTimetable(
             @RequestParam String grade,
             @RequestParam String classNM,
             @RequestParam String date
