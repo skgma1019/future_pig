@@ -1,12 +1,18 @@
 package com.project.community.controller;
 
-import com.project.community.service.UserService;
+
+
+import com.project.community.entity.User;
 import com.project.community.security.JWTUtil;
-import org.springframework.web.bind.annotation.*;
+import com.project.community.service.UserService;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Collections;
 import java.util.Map;
-import com.project.community.entity.User;
 
 
 @CrossOrigin(origins = "*")
@@ -35,9 +41,20 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> req) {
-        User user = userService.authenticate(req.get("username"), req.get("password"));
-        String token = jwtUtil.generateToken(user.getUsername());
-        return ResponseEntity.ok(Collections.singletonMap("token", token));
+        try {
+            System.out.println("🔥 로그인 요청 도착: " + req);
+
+            User user = userService.authenticate(req.get("username"), req.get("password"));
+            String token = jwtUtil.generateToken(user.getUsername(), user.getRole());
+
+            return ResponseEntity.ok(Collections.singletonMap("token", token));
+        } catch (UsernameNotFoundException | BadCredentialsException e) {
+            System.out.println("❌ 로그인 실패: " + e.getMessage());
+            return ResponseEntity.status(401).body("아이디 또는 비밀번호가 일치하지 않습니다.");
+        } catch (Exception e) {
+            System.out.println("❌ 서버 내부 오류: " + e.getMessage());
+            return ResponseEntity.status(500).body("서버 오류 발생");
+        }
     }
 }
 

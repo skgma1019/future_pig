@@ -24,15 +24,24 @@ public class SecurityConfig {
         http
                 .cors().and()
                 .csrf().disable()
-                .authorizeHttpRequests()
-                .requestMatchers("/", "/index.html", "/**").permitAll()
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // ✅ 이 줄 추가
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/timetable/**").permitAll()
-                .requestMatchers("/api/meal/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .formLogin().disable() // ✅ Spring Security 기본 로그인 비활성화
+
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/api/**",
+                                "/api/auth/**",        // 로그인 / 회원가입 허용
+                                "/api/timetable/**",   // 시간표 API 허용
+                                "/api/meal/**",        // 급식 API 허용
+                                "/", "/index.html",    // 홈 페이지 허용
+                                "/static/**",          // 정적 리소스 허용 (필요 시)
+                                "/favicon.ico",
+                                "/error"
+                        ).permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // CORS preflight
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")      // 관리자 전용
+                        .anyRequest().authenticated()                           // 그 외는 인증 필요
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }

@@ -3,8 +3,10 @@ package com.project.community.service;
 import com.project.community.dto.CommentDto;
 import com.project.community.entity.Article;
 import com.project.community.entity.Comment;
+import com.project.community.entity.User;
 import com.project.community.repository.ArticleRepository;
 import com.project.community.repository.CommentRepository;
+import com.project.community.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final ArticleRepository articleRepository;
+    private final UserRepository userRepository;
 
     public List<Comment> getComments(Long articleId) {
         return commentRepository.findByArticleId(articleId);
@@ -34,12 +37,36 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
+    public Comment update(Long id, CommentDto dto, String username) {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("댓글 없음"));
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("사용자 없음"));
+
+        boolean isAdmin = "ROLE_ADMIN".equals(user.getRole());
+
+        if (!isAdmin && !comment.getAuthor().equals(username)) {
+            throw new RuntimeException("본인 또는 관리자만 수정할 수 있습니다.");
+        }
+
+        comment.setContent(dto.getContent());
+        return commentRepository.save(comment);
+    }
+
     public void delete(Long id, String username) {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("댓글 없음"));
-        if (!comment.getAuthor().equals(username)) {
-            throw new RuntimeException("본인의 댓글만 삭제할 수 있습니다.");
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("사용자 없음"));
+
+        boolean isAdmin = "ROLE_ADMIN".equals(user.getRole());
+
+        if (!isAdmin && !comment.getAuthor().equals(username)) {
+            throw new RuntimeException("본인 또는 관리자만 삭제할 수 있습니다.");
         }
+
         commentRepository.delete(comment);
     }
 }

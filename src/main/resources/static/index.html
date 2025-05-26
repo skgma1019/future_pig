@@ -2,68 +2,175 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>커뮤니티 대시보드</title>
+    <title>SMC.community</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        body { font-family: 'Arial', sans-serif; background: #f9f9f9; padding: 20px; }
-        h1 { color: #333; }
-        .section { margin: 20px 0; }
-        .card {
-            background: white;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 8px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        /* 로그인 버튼 */
+        .login-btn {
+            background-color: transparent;
+            color: white;
+            border: none;
+            font-size: 18px;
+            margin-left: 20px;
+            cursor: pointer;
         }
-        a { text-decoration: none; color: #007bff; }
+
+        /* 로그인 모달 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6);
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            margin: 100px auto;
+            border-radius: 8px;
+            width: 300px;
+            text-align: center;
+        }
+
+        .modal input {
+            width: 90%;
+            padding: 8px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+        }
+
+        .modal button {
+            width: 100%;
+            padding: 10px;
+            background-color: #C4628D;
+            color: white;
+            border: none;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .modal-close {
+            float: right;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .user-info {
+            color: white;
+            font-weight: bold;
+            margin-left: 20px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #C4628D;
+            padding: 10px 20px;
+        }
+
+        .nav a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+
+        .search-bar {
+            display: flex;
+        }
+
+        .search-bar input {
+            padding: 5px;
+        }
+
+        .search-bar button {
+            padding: 5px;
+        }
     </style>
 </head>
 <body>
+<header class="header">
+    <div>
+        <img src="assets/logo.png" alt="logo" class="logo" style="height: 50px; vertical-align: middle;">
+        <nav class="nav" style="display: inline-block;">
+            <a href="#">최근 게시글</a>
+            <a href="#">인기 게시글</a>
+            <a href="#">인공갤</a>
+            <a href="#">보안갤</a>
+            <a href="#">모빌갤</a>
+            <a href="#">게임갤</a>
+        </nav>
+    </div>
+    <div style="display: flex; align-items: center;">
+        <form class="search-bar">
+            <input type="text" placeholder="검색어를 입력하세요">
+            <button type="submit">🔍</button>
+        </form>
+        <button class="login-btn" onclick="openModal()">로그인</button>
+        <span class="user-info" id="user-info"></span>
+    </div>
+</header>
 
-<h1>📌 커뮤니티 기능 대시보드</h1>
+<main class="main-content">
+    <!-- 기존 게시글 섹션 등은 그대로 유지 -->
+    <section class="section">
+        <h2>인기 게시글</h2>
+        <ul class="post-list">
+            <li><a href="#">인기글 제목 1</a></li>
+            <li><a href="#">인기글 제목 2</a></li>
+            <li><a href="#">인기글 제목 3</a></li>
+            <li><a href="#">인기글 제목 4</a></li>
+        </ul>
+    </section>
 
-<div class="section">
-    <h2>1. 메인 기능</h2>
-    <div class="card"><a href="/articles/latest">📰 최신 글 보기</a></div>
-    <div class="card"><a href="/articles/popular">🔥 인기 글 보기</a></div>
-    <div class="card"><a href="/notices">📢 공지사항 보기</a></div>
+    <!-- 나머지 섹션 생략 가능 -->
+</main>
+
+<!-- 로그인 모달 -->
+<div class="modal" id="login-modal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <h3>로그인</h3>
+        <input type="text" id="login-id" placeholder="아이디">
+        <input type="password" id="login-pw" placeholder="비밀번호">
+        <button onclick="login()">로그인</button>
+    </div>
 </div>
 
-<div class="section">
-    <h2>2. 회원 시스템</h2>
-    <div class="card"><a href="/login.html">🔐 로그인</a></div>
-    <div class="card"><a href="/register.html">📝 회원가입</a></div>
-    <div class="card"><a href="/profile.html">🙍‍♂️ 마이페이지</a></div>
-</div>
+<footer class="footer">
+    <p>&copy; 2025 SMC.community</p>
+</footer>
 
-<div class="section">
-    <h2>3. 게시판</h2>
-    <div class="card"><a href="/board?type=free">💬 자유 게시판</a></div>
-    <div class="card"><a href="/board?type=qa">❓ Q&A 게시판</a></div>
-    <div class="card"><a href="/board?type=info">📚 정보 공유 게시판</a></div>
-    <div class="card"><a href="/board?type=anonymous">👤 익명 게시판</a></div>
-    <div class="card"><a href="/board?type=notice">📢 공지사항 게시판</a></div>
-</div>
+<script>
+    function openModal() {
+        document.getElementById("login-modal").style.display = "block";
+    }
 
-<div class="section">
-    <h2>4. 게시물 기능</h2>
-    <div class="card"><a href="/write.html">✍ 글쓰기</a></div>
-    <div class="card"><a href="/articles">🗂 게시글 목록</a></div>
-    <div class="card"><a href="/api/comments">💬 댓글 기능</a></div>
-</div>
+    function closeModal() {
+        document.getElementById("login-modal").style.display = "none";
+    }
 
-<div class="section">
-    <h2>5. 검색 / 필터</h2>
-    <div class="card"><a href="/search?sort=latest">🕒 최신순</a></div>
-    <div class="card"><a href="/search?sort=popular">🔥 인기순</a></div>
-    <div class="card"><a href="/search?author=me">🙋‍♀️ 내가 쓴 글</a></div>
-</div>
+    function login() {
+        const id = document.getElementById("login-id").value;
+        const pw = document.getElementById("login-pw").value;
 
-<div class="section">
-    <h2>6. 공공 데이터 API</h2>
-    <div class="card"><a href="/meal">🍱 급식표 보기</a></div>
-    <div class="card"><a href="/timetable">📅 시간표 보기</a></div>
-</div>
+        if (id && pw) {
+            document.getElementById("user-info").innerText = `어서오세요, ${id}님`;
+            closeModal();
+        } else {
+            alert("아이디와 비밀번호를 입력하세요.");
+        }
+    }
 
+    // 모달 외부 클릭 시 닫기
+    window.onclick = function(event) {
+        const modal = document.getElementById("login-modal");
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
 </body>
 </html>
-l>

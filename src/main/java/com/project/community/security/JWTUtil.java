@@ -10,9 +10,6 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-
 
 @Component
 public class JWTUtil {
@@ -23,25 +20,37 @@ public class JWTUtil {
 
     @PostConstruct
     public void init() {
-     this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateToken(String username) {
+    // ✅ 관리자 포함 토큰 생성
+    public String generateToken(String username, String role) {
         return Jwts.builder()
-                .setSubject(username)
+                .claim("username", username)
+                .claim("role", role)
                 .setIssuedAt(new Date())
-                .setExpiration(Date.from(Instant.now().plus(1, ChronoUnit.DAYS)))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 24시간
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 
+    // ✅ 사용자 이름 추출
     public String extractUsername(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .getSubject();
+                .get("username", String.class);
     }
 
+    // ✅ 역할(Role) 추출
+    public String extractRole(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("role", String.class);
+    }
 }
