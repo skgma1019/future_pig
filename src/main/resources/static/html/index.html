@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>SMC.community</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="icon" href="../image/pavicon.ico">
+</head>
+<body>
+<header class="header">
+    <div>
+        <img src="../image/logo.png" alt="logo" class="logo">
+        <nav class="nav">
+            <a href="#">전체 게시글</a>
+        </nav>
+    </div>
+    <div class="right-bar">
+        <form class="search-bar">
+            <input type="text" placeholder="검색어를 입력하세요">
+            <button type="submit">🔍</button>
+        </form>
+        <button class="login-btn" onclick="location.href='login.html'">로그인</button>
+        <span class="user-info" id="user-info"></span>
+    </div>
+</header>
+
+<main class="main-content">
+    <section class="section">
+        <h2>전체 게시글</h2>
+
+        <div class="sort-options">
+            <label for="sort-select">정렬:</label>
+            <select id="sort-select" onchange="fetchArticles()">
+                <option value="latest">최신순</option>
+                <option value="likes">좋아요순</option>
+            </select>
+        </div>
+
+        <ul class="post-list" id="post-list">
+            <!-- 게시글 출력 영역 -->
+        </ul>
+    </section>
+</main>
+<section class="section">
+    <h2>시간표 조회</h2>
+    <label for="grade-select">학년</label>
+    <select id="grade-select" onchange="loadTimetableGrid()">
+        <option value="1">1학년</option>
+        <option value="2" selected>2학년</option>
+        <option value="3">3학년</option>
+    </select>
+    <div id="timetable-container"></div>
+</section>
+
+<footer class="footer">
+    <p>&copy; 2025 SMC.community</p>
+    <p>후원계좌 : 1001-4775-9781 토스뱅크</p>
+</footer>
+
+<script src="../javascript/index.js"></script>
+</body>
+</html>

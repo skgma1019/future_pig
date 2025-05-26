@@ -1,0 +1,71 @@
+body {
+    margin: 0;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #C4628D;
+    color: white;
+    padding: 10px 20px;
+}
+
+.nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.right-bar {
+    display: flex;
+    align-items: center;
+}
+
+.login-btn {
+    background-color: transparent;
+    color: white;
+    border: none;
+    font-size: 18px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.search-bar input {
+    padding: 5px;
+    margin-right: 5px;
+}
+
+.main-content {
+    padding: 20px;
+}
+
+.section {
+    max-width: 800px;
+    margin: auto;
+}
+
+.post-list li {
+    list-style: none;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.sort-options {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+.sort-options select {
+    margin-left: 10px;
+    padding: 5px;
+}
+
+.footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #f4f4f4;
+    margin-top: 40px;
+}

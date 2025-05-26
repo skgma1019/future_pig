@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
 @RequiredArgsConstructor  // 생성자 주입을 자동 생성
 public class ArticleService {
@@ -72,4 +73,13 @@ public class ArticleService {
 
         articleRepository.deleteById(id);
     }
+
+    public List<Article> getAllSorted(String sort) {
+        if ("likes".equals(sort)) {
+            return articleRepository.findAllByOrderByLikeCountDesc();
+        } else {
+            return articleRepository.findAllByOrderByCreatedAtDesc(); // 최신순 기본
+        }
+    }
+
 }

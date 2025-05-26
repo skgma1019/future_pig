@@ -7,8 +7,12 @@ import com.project.community.security.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -20,9 +24,10 @@ public class ArticleController {
 
     // 모든 게시글 조회
     @GetMapping
-    public List<Article> getAllArticles() {
-        return articleService.getAll();
-    }
+    public List<Article> getAllArticles(@RequestParam(defaultValue = "latest") String sort) {
+            return articleService.getAllSorted(sort);
+        }
+
 
     // 특정 게시글 조회 (id 기반)
     @GetMapping("/{id}")
@@ -59,12 +64,8 @@ public class ArticleController {
         return ResponseEntity.ok().build();
     }
 
-    // 🔍 테스트용 API - JSON 입력 확인용
-    @PostMapping("/test")
-    public String testJson(@RequestBody ArticleDto dto) {
-        System.out.println("📥 title: " + dto.getTitle());
-        System.out.println("📥 content: " + dto.getContent());
-        System.out.println("📥 author: " + dto.getAuthor());
-        return "OK";
-    }
+
+
+
+
 }

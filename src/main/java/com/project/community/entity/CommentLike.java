@@ -5,8 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
+@Table(name = "comment_like")
 @Getter
 @Setter
+
 public class CommentLike {
 
     @Id

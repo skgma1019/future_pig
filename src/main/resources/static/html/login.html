@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>로그인 / 회원가입</title>
+  <link rel="stylesheet" href="../css/login.css">
+</head>
+<body>
+<div class="container">
+  <div class="tab-buttons">
+    <button id="tab-login" class="active" onclick="showTab('login')">로그인</button>
+    <button id="tab-signup" onclick="showTab('signup')">회원가입</button>
+  </div>
+
+  <form id="login-form" class="active" onsubmit="event.preventDefault(); login();">
+    <input type="text" id="login-id" placeholder="아이디">
+    <input type="password" id="login-pw" placeholder="비밀번호">
+    <button type="submit" class="submit-btn">로그인</button>
+  </form>
+
+  <form id="signup-form" onsubmit="event.preventDefault(); signup();">
+    <input type="text" id="signup-id" placeholder="아이디">
+    <input type="email" id="signup-email" placeholder="이메일">
+    <input type="password" id="signup-pw" placeholder="비밀번호">
+    <button type="submit" class="submit-btn">회원가입</button>
+  </form>
+
+  <a href="index.html" class="back-link">← 메인으로 돌아가기</a>
+</div>
+
+<script src="../javascript/login.js"></script>
+</body>
+</html>

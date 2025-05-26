@@ -35,7 +35,8 @@ public class SecurityConfig {
                                 "/", "/index.html",    // 홈 페이지 허용
                                 "/static/**",          // 정적 리소스 허용 (필요 시)
                                 "/favicon.ico",
-                                "/error"
+                                "/error",
+                                "/html/**", "/css/**", "/javascript/**"
                         ).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // CORS preflight
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")      // 관리자 전용
