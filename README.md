@@ -106,7 +106,6 @@ npm start
 🔄 배포 환경 구성 (EC2 or Vercel)
 
 📫 연락처
-개발자: 이나흠
 
 GitHub: skgma1019
 
